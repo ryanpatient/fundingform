@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funding Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .nav-buttons { display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="fundingForm">
+            <!-- Page 1 -->
+            <div class="page active" id="page1">
+                <h2>Personal Information</h2>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required><br><br>
+            </div>
+            <!-- Page 2 -->
+            <div class="page" id="page2">
+                <h2>Business Information</h2>
+                <label for="businessName">Business Name:</label>
+                <input type="text" id="businessName" name="businessName" required><br><br>
+                <label for="industry">Industry:</label>
+                <input type="text" id="industry" name="industry" required><br><br>
+                <label for="yearsInBusiness">Years in Business:</label>
+                <input type="number" id="yearsInBusiness" name="yearsInBusiness" required><br><br>
+            </div>
+            <!-- Page 3 -->
+            <div class="page" id="page3">
+                <h2>Loan Information</h2>
+                <label for="loanAmount">Loan Amount:</label>
+                <input type="number" id="loanAmount" name="loanAmount" required><br><br>
+                <label for="loanPurpose">Purpose of Loan:</label>
+                <textarea id="loanPurpose" name="loanPurpose" required></textarea><br><br>
+            </div>
+            <!-- Page 4 -->
+            <div class="page" id="page4">
+                <h2>Additional Information</h2>
+                <label for="comments">Comments:</label>
+                <textarea id="comments" name="comments"></textarea><br><br>
+                <button type="submit">Submit</button>
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentTab = 0;
+        showTab(currentTab);
+
+        function showTab(n) {
+            let tabs = document.getElementsByClassName("page");
+            tabs[n].classList.add("active");
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (tabs.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+        }
+
+        function nextPrev(n) {
+            let tabs = document.getElementsByClassName("page");
+            if (n == 1 && !validateForm()) return false;
+            tabs[currentTab].classList.remove("active");
+            currentTab = currentTab + n;
+            if (currentTab >= tabs.length) {
+                document.getElementById("fundingForm").submit();
+                return false;
+            }
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            let tabs, inputs, i, valid = true;
+            tabs = document.getElementsByClassName("page");
+            inputs = tabs[currentTab].getElementsByTagName("input");
+            for (i = 0; i < inputs.length; i++) {
+                if (inputs[i].value == "") {
+                    inputs[i].className += " invalid";
+                    valid = false;
+                }
+            }
+            return valid;
+        }
+    </script>
+</body>
+</html>
